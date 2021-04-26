@@ -1,11 +1,8 @@
 import React from 'react';
-import { useLoggerContext } from '../../contexts/LoggingContext';
-import { useUser } from '../../state/hooks';
-import LoggedIn from './LoggedIn';
-import NotLoggedIn from './NotLoggedIn';
 import { Container } from 'react-bootstrap';
 import Text from '../../components/Text';
 import MetamaskConnectButton from '../../components/MetmaskConnectButton';
+import CompInteractionModal from './CompInteractionModal';
 
 const Home = () => {
   return (
@@ -14,6 +11,7 @@ const Home = () => {
         this is the comp app for the hackathon
       </Text>
       <MetamaskConnectButton />
+      <CompInteractionModal />
     </Container>
   );
 };
