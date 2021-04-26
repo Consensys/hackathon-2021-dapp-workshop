@@ -1,0 +1,16 @@
+*.log
+node_modules
+build
+docker
+public
+.idea
+cache
+*/**/server.tsx
+src/client.js
+*/**/setupTests.ts
+src/index.ts
+.prettierignore
+.eslintignore
+.eslintrc.json
+yarn.lock
+package.json

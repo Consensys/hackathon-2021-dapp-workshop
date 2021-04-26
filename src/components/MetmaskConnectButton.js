@@ -6,6 +6,7 @@ import MMLogo from '../static/metamask-logo.svg';
 import Text from './Text';
 import { colors } from '../theme';
 import { injected } from '../connectors';
+import { shortenAddress } from '../utils/shortenAddress';
 
 const MetamaskLogo = styled.img.attrs({
   src: MMLogo,
@@ -22,6 +23,7 @@ const Container = styled.div`
   border: 1px solid ${colors.green};
   display: flex;
   justify-content: space-between;
+  min-width: 370px;
 `;
 
 const MetamaskConnectButton = () => {
@@ -31,8 +33,8 @@ const MetamaskConnectButton = () => {
     return (
       <Container>
         <MetamaskLogo />
-        <Text uppercase color="green" t3 lineHeight="40px">
-          {account}
+        <Text uppercase color="green" t3 lineHeight="40px" className="mx-4">
+          {shortenAddress(account)}
         </Text>
         <ConnectBtn onClick={deactivate}>Log Out</ConnectBtn>
       </Container>
@@ -42,7 +44,7 @@ const MetamaskConnectButton = () => {
   return (
     <Container>
       <MetamaskLogo />
-      <Text uppercase color="green" t3 lineHeight="40px">
+      <Text uppercase color="green" t3 lineHeight="40px" className="mx-2">
         Metamask
       </Text>
       <ConnectBtn onClick={() => activate(injected)}>Connect</ConnectBtn>

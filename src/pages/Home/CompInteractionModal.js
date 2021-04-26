@@ -4,6 +4,7 @@ import Text from '../../components/Text';
 import BalanceInput from '../../components/BalanceInput';
 import Button from 'react-bootstrap/Button';
 import { colors } from '../../theme';
+import { ArrowDown } from 'react-bootstrap-icons';
 
 const ModalSkeleton = styled.div`
   display: flex;
@@ -41,9 +42,12 @@ const CompInteractionModal = () => {
         <Text block t2 color={colors.green} className="mb-3">
           Deposit
         </Text>
-        <BalanceInput balance={ethBalance} value={depositAmount} setValue={setDepositAmount} />
-        <BalanceInput balance={ethBalance} value={convertedAmount} />
-        <Button variant="outline-dark" disabled={depositAmount <= 0}>Deposit {depositAmount} ETH</Button>
+        <BalanceInput balance={ethBalance} value={depositAmount} setValue={setDepositAmount} currency="eth" />
+        <ArrowDown color={colors.green} size={36} style={{ margin: '1rem auto' }} />
+        <BalanceInput balance={ethBalance} value={convertedAmount} currency="cEth" title="To" />
+        <Button variant="outline-dark" disabled={depositAmount <= 0} className="mt-3">
+          Deposit {depositAmount} ETH
+        </Button>
       </div>
     </ModalSkeleton>
   );
