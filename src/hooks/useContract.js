@@ -4,15 +4,14 @@ import {
   // ContractInterface
 } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
-import { isAddress } from '../utils/isAddress';
-import useActiveWallet from './walletConnection/useActiveWallet';
+import { useWeb3React } from '@web3-react/core';
 
 export function useContract(contractAddress, ABI) {
-  if (!isAddress(contractAddress) || contractAddress === AddressZero) {
+  if (contractAddress === AddressZero) {
     throw Error(`Invalid 'contractAddress' parameter '${contractAddress}'.`);
   }
 
-  const { library, account } = useActiveWallet();
+  const { library, account } = useWeb3React();
 
   const signerOrProvider = account ? library.getSigner(account).connectUnchecked() : library;
 

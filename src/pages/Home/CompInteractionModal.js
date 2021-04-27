@@ -5,6 +5,7 @@ import BalanceInput from '../../components/BalanceInput';
 import Button from 'react-bootstrap/Button';
 import { colors } from '../../theme';
 import { ArrowDown } from 'react-bootstrap-icons';
+import { useCEth } from '../../hooks/useCEth';
 
 const ModalSkeleton = styled.div`
   display: flex;
@@ -36,6 +37,12 @@ const CompInteractionModal = () => {
   const [depositAmount, setDepositAmount] = useState(0);
   const [convertedAmount, setConvertedAmount] = useState(0);
 
+  const { deposit } = useCEth();
+
+  const handleDepositSubmit = () => {
+    deposit(depositAmount);
+  };
+
   return (
     <ModalSkeleton show>
       <div className="card">
@@ -45,7 +52,7 @@ const CompInteractionModal = () => {
         <BalanceInput balance={ethBalance} value={depositAmount} setValue={setDepositAmount} currency="eth" />
         <ArrowDown color={colors.green} size={36} style={{ margin: '1rem auto' }} />
         <BalanceInput balance={ethBalance} value={convertedAmount} currency="cEth" title="To" />
-        <Button variant="outline-dark" disabled={depositAmount <= 0} className="mt-3">
+        <Button variant="outline-dark" disabled={depositAmount <= 0} className="mt-3" onClick={handleDepositSubmit}>
           Deposit {depositAmount} ETH
         </Button>
       </div>

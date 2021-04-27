@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
-import useActiveWallet from './useActiveWallet';
+import { useWeb3React } from '@web3-react/core';
 
-const supportedCompNetworks = [1, 42]; // mainnet, kovan
+const supportedCompNetworks = [1, 42, 4]; // mainnet, kovan
 
 function useIsValidNetwork() {
-  const { chainId, signingType } = useActiveWallet();
+  const { chainId } = useWeb3React();
 
   const isValidCompNetwork = useMemo(() => {
-    return supportedCompNetworks.includes(chainId) || signingType === 'ledger';
-  }, [chainId, signingType]);
+    return supportedCompNetworks.includes(chainId);
+  }, [chainId]);
 
   return {
     isValidNetwork: isValidCompNetwork,
