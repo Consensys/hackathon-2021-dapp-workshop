@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Text from '../../components/Text';
 import BalanceInput from '../../components/BalanceInput';
+import Card from '../../components/Card';
 import Button from 'react-bootstrap/Button';
 import { colors } from '../../theme';
 import { ArrowDown } from 'react-bootstrap-icons';
 import { useCEth } from '../../hooks/useCEth';
+import { useAppContext } from '../../AppContext';
 
 const ModalSkeleton = styled.div`
   display: flex;
@@ -17,45 +19,44 @@ const ModalSkeleton = styled.div`
   flex: 1 1 0%;
   overflow: hidden auto;
   z-index: 1;
-
-  .card {
-    background-color: ${colors.lightBlue};
-    position: relative;
-    max-width: 420px;
-    width: 100%;
-    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px,
-      rgb(0 0 0 / 1%) 0px 24px 32px;
-    border-radius: 15px;
-    border-color: ${colors.green};
-    padding: 20px;
-  }
 `;
 
 const CompInteractionModal = () => {
-  const [ethBalance, setEthBalance] = useState(10);
-  const [cEthBalance, setCEthBalance] = useState(0);
   const [depositAmount, setDepositAmount] = useState(0);
-  const [convertedAmount, setConvertedAmount] = useState(0);
+  const [convertedAmount] = useState(0);
 
-  const { deposit } = useCEth();
+  const { deposit, getCtokenExchangeRate } = useCEth();
+  const { ethBalance } = useAppContext();
 
   const handleDepositSubmit = () => {
     deposit(depositAmount);
   };
 
+  const newCEthBal = useMemo(() => {
+    return Number(depositAmount * 1.3).toFixed(4);
+  }, [depositAmount]);
+
+  const [exchangeRate, setExchangeRate] = useState(0);
+  console.log(exchangeRate);
+
+  useEffect(() => {
+    const fetchRate = async () => setExchangeRate(await getCtokenExchangeRate());
+    fetchRate();
+  }, []);
+
   return (
     <ModalSkeleton show>
-      <div className="card">
+      <Card style={{ maxWidth: 420 }}>
         <Text block t2 color={colors.green} className="mb-3">
           Deposit
         </Text>
         <BalanceInput balance={ethBalance} value={depositAmount} setValue={setDepositAmount} currency="eth" />
         <ArrowDown color={colors.green} size={36} style={{ margin: '1rem auto' }} />
-        <BalanceInput balance={ethBalance} value={convertedAmount} currency="cEth" title="To" />
+        <BalanceInput balance={newCEthBal} value={convertedAmount} currency="cEth" title="To" />
         <Button variant="outline-dark" disabled={depositAmount <= 0} className="mt-3" onClick={handleDepositSubmit}>
           Deposit {depositAmount} ETH
         </Button>
-      </div>
+      </Card>
     </ModalSkeleton>
   );
 };

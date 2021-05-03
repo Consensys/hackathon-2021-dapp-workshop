@@ -6,6 +6,7 @@ import { Route } from 'react-router-dom';
 import './styles/App.css';
 import Home from './pages/Home';
 import Header from './components/Header';
+import { AppContextProvider } from './AppContext';
 
 function getLibrary(provider) {
   return new ethers.providers.Web3Provider(provider);
@@ -13,12 +14,14 @@ function getLibrary(provider) {
 
 const App = () => {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <div>
-        <Header />
-        <Route exact path="/" component={Home} />
-      </div>
-    </Web3ReactProvider>
+    <AppContextProvider>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <div>
+          <Header />
+          <Route exact path="/" component={Home} />
+        </div>
+      </Web3ReactProvider>
+    </AppContextProvider>
   );
 };
 

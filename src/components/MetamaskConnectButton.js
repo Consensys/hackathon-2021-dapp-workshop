@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { useWeb3React } from '@web3-react/core';
 import MMLogo from '../static/metamask-logo.svg';
 import Text from './Text';
-import { colors } from '../theme';
+import Card from './Card';
 import { injected } from '../connectors';
 import { shortenAddress } from '../utils/shortenAddress';
 
@@ -16,39 +16,29 @@ const MetamaskLogo = styled.img.attrs({
 
 const ConnectBtn = styled(Button).attrs({ variant: 'outline-dark' })``;
 
-const Container = styled.div`
-  background-color: ${colors.lightBlue};
-  padding: 1rem;
-  border-radius: 4px;
-  border: 1px solid ${colors.green};
-  display: flex;
-  justify-content: space-between;
-  min-width: 370px;
-`;
-
 const MetamaskConnectButton = () => {
   const { activate, active, account, deactivate } = useWeb3React();
 
   if (active) {
     return (
-      <Container>
+      <Card className="d-flex flex-row justify-content-between" style={{ width: 350 }}>
         <MetamaskLogo />
         <Text uppercase color="green" t3 lineHeight="40px" className="mx-4">
           {shortenAddress(account)}
         </Text>
         <ConnectBtn onClick={deactivate}>Log Out</ConnectBtn>
-      </Container>
+      </Card>
     );
   }
 
   return (
-    <Container>
+    <Card className="d-flex flex-row justify-content-between" style={{ width: 350 }}>
       <MetamaskLogo />
       <Text uppercase color="green" t3 lineHeight="40px" className="mx-2">
         Metamask
       </Text>
       <ConnectBtn onClick={() => activate(injected)}>Connect</ConnectBtn>
-    </Container>
+    </Card>
   );
 };
 

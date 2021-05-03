@@ -65,7 +65,7 @@ const BalanceInput = ({ balance, value, setValue, currency = 'default', title = 
     <InputContainer>
       <div className="d-flex justify-content-between mb-3">
         <Text color={colors.green}>{title}</Text>
-        <Text color={colors.green}>Balance: {typeof balance === 'number' ? balance : '--'}</Text>
+        <Text color={colors.green}>Balance: {balance}</Text>
       </div>
       <div className="d-flex">
         <input

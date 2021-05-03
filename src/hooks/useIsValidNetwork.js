@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
-const supportedCompNetworks = [1, 42, 4]; // mainnet, kovan
+const supportedCompNetworks = [1, 42, 4]; // mainnet, kovan, rinkeby
 
 function useIsValidNetwork() {
   const { chainId } = useWeb3React();
