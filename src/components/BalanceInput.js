@@ -42,7 +42,7 @@ const IconMapping = {
       </Text>
     </IconWrapper>
   ),
-  ceth: (
+  ctoken: (
     <IconWrapper className="d-flex">
       <CompLogo />
       <Text lineHeight="35px" color={colors.brown}>

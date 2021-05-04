@@ -6,8 +6,9 @@ import Card from '../../components/Card';
 import Button from 'react-bootstrap/Button';
 import { colors } from '../../theme';
 import { ArrowDown } from 'react-bootstrap-icons';
-import { useCEth } from '../../hooks/useCEth';
+import { useCToken } from '../../hooks/useCToken';
 import { useAppContext } from '../../AppContext';
+import Spinner from 'react-bootstrap/Spinner';
 
 const ModalSkeleton = styled.div`
   display: flex;
@@ -23,36 +24,53 @@ const ModalSkeleton = styled.div`
 
 const CompInteractionModal = () => {
   const [depositAmount, setDepositAmount] = useState(0);
-  const [convertedAmount] = useState(0);
+  const { deposit } = useCToken();
+  const { ethBalance, cTokenBalance, exchangeRate, txnStatus, setTxnStatus } = useAppContext();
+  const handleDepositSubmit = () => deposit(depositAmount);
+  const convertedAmount = useMemo(() => Number(depositAmount / exchangeRate).toFixed(4), [depositAmount, exchangeRate]);
 
-  const { deposit, getCtokenExchangeRate } = useCEth();
-  const { ethBalance } = useAppContext();
+  if (txnStatus === 'LOADING') {
+    return (
+      <ModalSkeleton show>
+        <Card style={{ maxWidth: 420, minHeight: 400 }}>
+          <Spinner animation="border" role="status" className="m-auto" />
+        </Card>
+      </ModalSkeleton>
+    );
+  }
 
-  const handleDepositSubmit = () => {
-    deposit(depositAmount);
-  };
+  if (txnStatus === 'COMPLETE') {
+    return (
+      <ModalSkeleton show>
+        <Card style={{ maxWidth: 420, minHeight: 400 }}>
+          <Text block center className="mb-5">
+            Txn Was successful!
+          </Text>
+          <Button onClick={() => setTxnStatus('NOT_SUBMITTED')}>Go Back</Button>
+        </Card>
+      </ModalSkeleton>
+    );
+  }
 
-  const newCEthBal = useMemo(() => {
-    return Number(depositAmount * 1.3).toFixed(4);
-  }, [depositAmount]);
-
-  const [exchangeRate, setExchangeRate] = useState(0);
-  console.log(exchangeRate);
-
-  useEffect(() => {
-    const fetchRate = async () => setExchangeRate(await getCtokenExchangeRate());
-    fetchRate();
-  }, []);
-
+  if (txnStatus === 'ERROR') {
+    return (
+      <ModalSkeleton show>
+        <Card style={{ maxWidth: 420, minHeight: 400 }}>
+          <Text>Txn ERROR</Text>
+          <Button onClick={() => setTxnStatus('NOT_SUBMITTED')}>Go Back</Button>
+        </Card>
+      </ModalSkeleton>
+    );
+  }
   return (
     <ModalSkeleton show>
-      <Card style={{ maxWidth: 420 }}>
+      <Card style={{ maxWidth: 420, minHeight: 400 }}>
         <Text block t2 color={colors.green} className="mb-3">
           Deposit
         </Text>
         <BalanceInput balance={ethBalance} value={depositAmount} setValue={setDepositAmount} currency="eth" />
         <ArrowDown color={colors.green} size={36} style={{ margin: '1rem auto' }} />
-        <BalanceInput balance={newCEthBal} value={convertedAmount} currency="cEth" title="To" />
+        <BalanceInput balance={cTokenBalance} value={convertedAmount} currency="cToken" title="To" />
         <Button variant="outline-dark" disabled={depositAmount <= 0} className="mt-3" onClick={handleDepositSubmit}>
           Deposit {depositAmount} ETH
         </Button>

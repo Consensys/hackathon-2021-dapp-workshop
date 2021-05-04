@@ -1,0 +1,43 @@
+import React from 'react';
+import styled from 'styled-components';
+import Button from 'react-bootstrap/Button';
+import { useWeb3React } from '@web3-react/core';
+import MMLogo from '../static/metamask-logo.svg';
+import Text from './Text';
+import Card from './Card';
+import { injected } from '../connectors';
+import { shortenAddress } from '../utils/shortenAddress';
+import Modal from 'react-bootstrap/Modal';
+import MetamaskConnectButton from './MetamaskConnectButton';
+import { useAppContext } from '../AppContext';
+
+const MetamaskLogo = styled.img.attrs({
+  src: MMLogo,
+})`
+  height: 40px;
+`;
+
+const ConnectWalletModal = () => {
+  const { activate, active, account, deactivate } = useWeb3React();
+  const { setWalletConnectModal } = useAppContext();
+  return (
+    <Modal show onHide={() => setWalletConnectModal(false)}>
+      <Modal.Header>
+        <MetamaskLogo />
+        <Text uppercase color="green" t3 lineHeight="40px" className="mx-2">
+          Connect your Metamask wallet
+        </Text>
+      </Modal.Header>
+      <Modal.Body>
+        <Text block className="mb-5">
+          You must connect a wallet to use this decentralized application
+        </Text>
+        <Button variant="outline-dark" onClick={() => activate(injected)}>
+          Connect
+        </Button>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+export default ConnectWalletModal;

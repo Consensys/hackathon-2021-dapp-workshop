@@ -4,19 +4,19 @@ import Card from './Card';
 import { colors } from '../theme';
 import { useWeb3React } from '@web3-react/core';
 import useEth from '../hooks/useEth';
-import { useCEth } from '../hooks/useCEth';
+import { useCToken } from '../hooks/useCToken';
 import { useAppContext } from '../AppContext';
 
 const BalanceCard = () => {
   const { account } = useWeb3React();
   const { fetchEthBalance } = useEth();
-  const { fetchCEthBalance } = useCEth();
-  const { ethBalance, cEthBalance } = useAppContext();
+  const { fetchCTokenBalance } = useCToken();
+  const { ethBalance, cTokenBalance } = useAppContext();
 
   useEffect(() => {
     if (account) {
       fetchEthBalance();
-      fetchCEthBalance();
+      fetchCTokenBalance();
     }
   }, [account]);
 
@@ -26,7 +26,7 @@ const BalanceCard = () => {
         ETH balance: {ethBalance}
       </Text>
       <Text block color={colors.green}>
-        cETH balance: {cEthBalance}
+        cETH balance: {cTokenBalance}
       </Text>
     </Card>
   );
