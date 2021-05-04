@@ -9,9 +9,9 @@ import { useEffect } from 'react';
 export const useCToken = () => {
   const { account } = useWeb3React();
   const { isValidNetwork } = useIsValidNetwork();
-  const cTokenContractAddress = '0xd6801a1dffcd0a410336ef88def4320d6df1883e'; // kovan
+  const cTokenContractAddress = '0xd6801a1dffcd0a410336ef88def4320d6df1883e'; // rinkeby
   const cTokenContract = useContract(cTokenContractAddress, C_TOKEN_ABI);
-  const { setCTokenBalance, setExchangeRate, setTxnStatus } = useAppContext();
+  const { setCTokenBalance, setExchangeRate, setTxnStatus, cTokenBalance, exchangeRate } = useAppContext();
 
   const fetchCTokenBalance = async () => {
     const cTokenBalance = await cTokenContract.balanceOf(account);
@@ -52,6 +52,8 @@ export const useCToken = () => {
   }, [account]);
 
   return {
+    cTokenBalance,
+    exchangeRate,
     getCTokenExchangeRate,
     fetchCTokenBalance,
     deposit,

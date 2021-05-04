@@ -4,12 +4,9 @@ import Button from 'react-bootstrap/Button';
 import { useWeb3React } from '@web3-react/core';
 import MMLogo from '../static/metamask-logo.svg';
 import Text from './Text';
-import Card from './Card';
 import { injected } from '../connectors';
-import { shortenAddress } from '../utils/shortenAddress';
 import Modal from 'react-bootstrap/Modal';
-import MetamaskConnectButton from './MetamaskConnectButton';
-import { useAppContext } from '../AppContext';
+import useWalletConnectionModal from '../hooks/useWalletConnectionModal';
 
 const MetamaskLogo = styled.img.attrs({
   src: MMLogo,
@@ -18,8 +15,8 @@ const MetamaskLogo = styled.img.attrs({
 `;
 
 const ConnectWalletModal = () => {
-  const { activate, active, account, deactivate } = useWeb3React();
-  const { setWalletConnectModal } = useAppContext();
+  const { activate } = useWeb3React();
+  const { setWalletConnectModal } = useWalletConnectionModal();
   return (
     <Modal show onHide={() => setWalletConnectModal(false)}>
       <Modal.Header>

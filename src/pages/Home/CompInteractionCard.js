@@ -9,8 +9,10 @@ import { ArrowDown } from 'react-bootstrap-icons';
 import { useCToken } from '../../hooks/useCToken';
 import { useAppContext } from '../../AppContext';
 import Spinner from 'react-bootstrap/Spinner';
+import useEth from '../../hooks/useEth';
+import useTransaction from '../../hooks/useTransaction';
 
-const ModalSkeleton = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -22,48 +24,49 @@ const ModalSkeleton = styled.div`
   z-index: 1;
 `;
 
-const CompInteractionModal = () => {
+const CompInteractionCard = () => {
   const [depositAmount, setDepositAmount] = useState(0);
-  const { deposit } = useCToken();
-  const { ethBalance, cTokenBalance, exchangeRate, txnStatus, setTxnStatus } = useAppContext();
+  const { deposit, cTokenBalance, exchangeRate } = useCToken();
+  const { ethBalance } = useEth();
+  const { txnStatus, setTxnStatus } = useTransaction();
   const handleDepositSubmit = () => deposit(depositAmount);
   const convertedAmount = useMemo(() => Number(depositAmount / exchangeRate).toFixed(4), [depositAmount, exchangeRate]);
 
   if (txnStatus === 'LOADING') {
     return (
-      <ModalSkeleton show>
+      <Container show>
         <Card style={{ maxWidth: 420, minHeight: 400 }}>
           <Spinner animation="border" role="status" className="m-auto" />
         </Card>
-      </ModalSkeleton>
+      </Container>
     );
   }
 
   if (txnStatus === 'COMPLETE') {
     return (
-      <ModalSkeleton show>
+      <Container show>
         <Card style={{ maxWidth: 420, minHeight: 400 }}>
           <Text block center className="mb-5">
             Txn Was successful!
           </Text>
           <Button onClick={() => setTxnStatus('NOT_SUBMITTED')}>Go Back</Button>
         </Card>
-      </ModalSkeleton>
+      </Container>
     );
   }
 
   if (txnStatus === 'ERROR') {
     return (
-      <ModalSkeleton show>
+      <Container show>
         <Card style={{ maxWidth: 420, minHeight: 400 }}>
           <Text>Txn ERROR</Text>
           <Button onClick={() => setTxnStatus('NOT_SUBMITTED')}>Go Back</Button>
         </Card>
-      </ModalSkeleton>
+      </Container>
     );
   }
   return (
-    <ModalSkeleton show>
+    <Container show>
       <Card style={{ maxWidth: 420, minHeight: 400 }}>
         <Text block t2 color={colors.green} className="mb-3">
           Deposit
@@ -75,8 +78,8 @@ const CompInteractionModal = () => {
           Deposit {depositAmount} ETH
         </Button>
       </Card>
-    </ModalSkeleton>
+    </Container>
   );
 };
 
-export default CompInteractionModal;
+export default CompInteractionCard;
