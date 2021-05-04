@@ -9,9 +9,8 @@ import { useAppContext } from '../AppContext';
 
 const BalanceCard = () => {
   const { account } = useWeb3React();
-  const { fetchEthBalance } = useEth();
-  const { fetchCTokenBalance } = useCToken();
-  const { ethBalance, cTokenBalance } = useAppContext();
+  const { fetchEthBalance, ethBalance } = useEth();
+  const { fetchCTokenBalance, cTokenBalance } = useCToken();
 
   useEffect(() => {
     if (account) {
