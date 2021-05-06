@@ -8,8 +8,7 @@ const renderMethod = module.hot ? render : hydrate;
 export const Client = () => {
   return (
     <BrowserRouter>
-          <App />
-
+      <App />
     </BrowserRouter>
   );
 };
