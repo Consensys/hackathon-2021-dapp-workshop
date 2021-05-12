@@ -13,9 +13,11 @@ export function useContract(contractAddress, ABI) {
 
   const { library, account } = useWeb3React();
 
+  // What is a signer vs a provider?
   const signerOrProvider = account ? library.getSigner(account).connectUnchecked() : library;
 
   return useMemo(() => {
+    // What is an ABi?
     return new Contract(contractAddress, ABI, signerOrProvider);
   }, [contractAddress, ABI, signerOrProvider]);
 }

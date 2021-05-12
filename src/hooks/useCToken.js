@@ -28,23 +28,6 @@ export const useCToken = () => {
     }
   };
 
-  const deposit = async (amount) => {
-    if (account && isValidNetwork) {
-      try {
-        setTxnStatus('LOADING');
-        const txn = await cTokenContract.mint({
-          from: account,
-          value: parseEther(amount),
-        });
-        await txn.wait(1);
-        await fetchCTokenBalance();
-        setTxnStatus('COMPLETE');
-      } catch (error) {
-        setTxnStatus('ERROR');
-      }
-    }
-  };
-
   useEffect(() => {
     if (account) {
       getCTokenExchangeRate();
@@ -56,6 +39,5 @@ export const useCToken = () => {
     exchangeRate,
     getCTokenExchangeRate,
     fetchCTokenBalance,
-    deposit,
   };
 };

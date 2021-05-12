@@ -8,7 +8,7 @@ import { useCToken } from '../hooks/useCToken';
 import { useAppContext } from '../AppContext';
 
 const BalanceCard = () => {
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const { fetchEthBalance, ethBalance } = useEth();
   const { fetchCTokenBalance, cTokenBalance } = useCToken();
 
@@ -17,7 +17,7 @@ const BalanceCard = () => {
       fetchEthBalance();
       fetchCTokenBalance();
     }
-  }, [account]);
+  }, [account, chainId]);
 
   return (
     <Card style={{ maxWidth: 300 }}>

@@ -74,9 +74,9 @@ const CompInteractionCard = () => {
         <BalanceInput balance={ethBalance} value={depositAmount} setValue={setDepositAmount} currency="eth" />
         <ArrowDown color={colors.green} size={36} style={{ margin: '1rem auto' }} />
         <BalanceInput balance={cTokenBalance} value={convertedAmount} currency="cToken" title="To" />
-        <Button variant="outline-dark" disabled={depositAmount <= 0} className="mt-3" onClick={handleDepositSubmit}>
+        {/* <Button variant="outline-dark" disabled={depositAmount <= 0} className="mt-3" onClick={handleDepositSubmit}>
           Deposit {depositAmount} ETH
-        </Button>
+        </Button> */}
       </Card>
     </Container>
   );
